@@ -29,8 +29,8 @@ typedef struct Node {
 // A linked list containing a head and tail pointer.
 // TODO: Add the fields needed to keep track of the first and last nodes.
 typedef struct LinkedList {
-    void *head;
-    void *tail;
+    Node *head;
+    Node *tail;
 } LinkedList;
 
 // Initializes an empty linked list.
@@ -44,16 +44,17 @@ void initList(LinkedList *list) {
 // If the list is empty, the new node should become both the head and tail.
 // Otherwise, add the new node after the current tail and update the tail.
 void add(LinkedList *list, int value) {
-    struct Node *node = malloc(sizeof(*node));
+    Node *node = malloc(sizeof(*node));
     node -> val = value;
+    node -> next = NULL;
     if (list -> tail == NULL && list -> head == NULL) {
-                list -> head = node;
-                list -> tail = node;
-            }
-        else {
-                node -> next = list -> tail;
-                list -> tail = node;
-            }
+        list -> head = node;
+        list -> tail = node;
+        } 
+    else {
+        list -> tail -> next = node;
+        list -> tail = list -> tail -> next;
+        }
     }
 
 // Removes the first node containing the given integer from the linked list.
@@ -74,12 +75,13 @@ void printList(LinkedList *list){
                 printf("%d", p -> val);
                 printf("->");
             }
+        printf("NULL\n");
     }
 
 // Main function used to test your linked list implementation.
 int main(void) {
 
-struct LinkedList *list = malloc(sizeof(*list));
+LinkedList *list = malloc(sizeof(*list));
 
 initList(list);
 add(list, 1);
